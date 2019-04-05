@@ -11,7 +11,7 @@
 #include <WidgetRTC.h>
 
 #define DHTPIN 23
-#define DHTTYPE DHT11
+#define DHTTYPE DHT22
 
 DHT_Unified dht(DHTPIN, DHTTYPE);
 BlynkTimer timer;
@@ -50,30 +50,31 @@ BLYNK_WRITE(V1) {
 
   // Delay between measurements.
   // Get temperature event and print its value.
-  sensors_event_t event;
-  dht.temperature().getEvent(&event);
-  if (isnan(event.temperature)) {
+  sensors_event_t eventTemp;
+  sensors_event_t eventHumi;
+  dht.temperature().getEvent(&eventTemp);
+  if (isnan(eventTemp.temperature)) {
     Serial.println(F("Error reading temperature!"));
   }
   else {
     Serial.print(F("Temperature: "));
-    Serial.print(event.temperature);
+    Serial.print(eventTemp.temperature);
     Serial.println(F("°C"));
   }
   // Get humidity event and print its value.
-  dht.humidity().getEvent(&event);
-  if (isnan(event.relative_humidity)) {
+  dht.humidity().getEvent(&eventHumi);
+  if (isnan(eventHumi.relative_humidity)) {
     Serial.println(F("Error reading humidity!"));
   }
   else {
     Serial.print(F("Humidity: "));
-    Serial.print(event.relative_humidity);
+    Serial.print(eventHumi.relative_humidity);
     Serial.println(F("%"));
   }
   clockDisplay();
-  Serial.println("Dat sent!");
+  Serial.println("Data sent!");
   Serial.println();
-  String msg = "{\"sensor\": {\"lat\": "+String(gps.getLat())+",\"log\": "+String(gps.getLon())+"},\"lat\": "+String(gps.getLat())+",\"log\": "+String(gps.getLon())+"}";
+  String msg = "{\n\t\"sensor\":{\n\t\t\"humidity\": "+String(eventHumi.relative_humidity)+",\n\t\t\"temperature\": "+String(eventTemp.temperature)+"\n\t},\n\t\"lat\": "+String(param[0].asString())+",\n\t\"log\": "+String(param[1].asString())+"\n}\n\n\n";
   Blynk.virtualWrite(V10, msg);
   
 //  Blynk.virtualWrite(V10, "http://big-city-server.herokuapp.com/api/v1/ws/iot");
