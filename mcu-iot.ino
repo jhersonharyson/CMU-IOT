@@ -190,7 +190,7 @@ BLYNK_WRITE(V1) {
   //            \n\t\t\t\"smoke\": "",
   //            \n\t\t\t\"lta\": ""
   //     \n\t\t}"
-  String msg = "{\n\t\"sensor\":{\n\t\t\"humidity\": " + (isnan(eventHumi.relative_humidity) ? "\"\"" : String(eventHumi.relative_humidity)) + ",\n\t\t\"temperature\": " + (isnan(eventTemp.temperature) ? "\"\"" : String(eventTemp.temperature)) + ",\n\t\t\"noise_pollution \": "+String(dB)+",\n\t\t\"toxic_gases\": { \n\t\t\t\"co\": " + String(co) + ",\n\t\t\t\"smoke\":" + String(smoke) + ", \n\t\t\t\"lpg\": " + String(lpg) + " \n\t\t}\n\t},\n\t\"lat\": " + String(param[0].asString()) + ",\n\t\"log\": " + String(param[1].asString()) + ",\n\t\"speed\": " + String(param[3].asString()) + "\n}\n\n\n";
+  String msg = "{\n\t\"sensor\":{\n\t\t\"humidity\": " + (isnan(eventHumi.relative_humidity) ? "\"\"" : String(eventHumi.relative_humidity)) + ",\n\t\t\"temperature\": " + (isnan(eventTemp.temperature) ? "\"\"" : String(eventTemp.temperature)) + ",\n\t\t\"noise_pollution \": "+String(dB)+",\n\t\t\"toxic_gases\": { \n\t\t\t\"co\": " + String(co) + ",\n\t\t\t\"smoke\":" + String(smoke) + ", \n\t\t\t\"lpg\": " + String(lpg) + " \n\t\t}\n\t},\n\t\"lat\": " + String(param[0].asString()) + ",\n\t\"lon\": " + String(param[1].asString()) + ",\n\t\"speed\": " + String(param[3].asString()) + "\n}\n\n\n";
   Serial.println(msg);
   Blynk.virtualWrite(V9, msg);
   Blynk.virtualWrite(V3, msg);
